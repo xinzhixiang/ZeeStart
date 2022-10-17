@@ -480,6 +480,7 @@
                     this.checked = false;
                     this.app_data_exported = true;
 
+
                     //var el = document.getElementById("new-app-modal");
                     //const modal = new Modal(el);
 
@@ -490,6 +491,9 @@
                     //     .querySelector(".bg-opacity-50")
                     //     .classList.add("hidden");
                     this.exportAppData();
+
+                    // 跳转到新建的 app tab 显示数据
+                    this.loadDefaultApps(this.currentAppSlug);
 
                 },
 
