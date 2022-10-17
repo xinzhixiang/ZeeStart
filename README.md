@@ -3,6 +3,11 @@ Zee's Startpage
 
 ## 使用 Tailwind CSS + Vue 制作的个人导航页，HTML 纯文本单文件，支持自定义数据和离线部署。
 
+截图：
+![https://github.com/xinzhixiang/ZeeStart/blob/main/screenshots/home.png?raw=true](https://github.com/xinzhixiang/ZeeStart/blob/main/screenshots/home.png?raw=true)
+更多截图：
+[https://github.com/xinzhixiang/ZeeStart/tree/main/screenshots](https://github.com/xinzhixiang/ZeeStart/tree/main/screenshots)
+
 - 比较简洁；
 
 - 支持静置自动显示大时钟；
