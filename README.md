@@ -3,7 +3,7 @@ Zee's Startpage
 
 ## 使用 Tailwind CSS + Vue 制作的个人导航页，HTML 纯文本单文件，支持自定义数据和离线部署。
 
-比较简洁；
+- 比较简洁；
 
 - 支持静置自动显示大时钟；
 
@@ -27,7 +27,7 @@ Zee's Startpage
 
 - 无链接跟踪，没有统计代码。
 
-使用支持：
-[](https://xinzhixiang.gumroad.com/l/zeestart)
+### 使用支持：
+[https://xinzhixiang.gumroad.com/l/zeestart](https://xinzhixiang.gumroad.com/l/zeestart)
 
 * 项目中已使用 CloudFlare CDN 和 unpkg 的 CDNJS 资源；时钟模块代码来自网络，已修改指定时区，添加年进度条，以及修正部分兼容性问题，稍后补充源码链接。
