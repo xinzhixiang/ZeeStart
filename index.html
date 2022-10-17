@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zee Startpage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <script data-cfasync="false"
+        src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.41/vue.global.prod.min.js"></script>
+    <style>
+        .progress-clock {
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            position: relative;
+            text-align: center;
+            width: 32em;
+            height: 32em
+        }
+
+        .progress-clock__time-date,
+        .progress-clock__time-digit,
+        .progress-clock__time-colon,
+        .progress-clock__time-ampm {
+            transition: color .2s linear;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            font-variant-numeric: tabular-nums
+        }
+
+        .progress-clock__time-date,
+        .progress-clock__time-digit {
+            background: transparent
+        }
+
+        .progress-clock__time-date,
+        .progress-clock__time-ampm {
+            grid-column: 1 / 6
+        }
+
+        .progress-clock__time-date {
+            font-size: 1.2em;
+            line-height: 1.33;
+            font-variant-numeric: tabular-nums
+        }
+
+        .progress-clock__time-digit,
+        .progress-clock__time-colon {
+            font-size: 4em;
+            font-weight: 400;
+            grid-row: 2;
+            font-variant-numeric: tabular-nums
+        }
+
+        .progress-clock__time-colon {
+            line-height: 1.275
+        }
+
+        .progress-clock__time-ampm {
+            cursor: default;
+            grid-row: 3
+        }
+
+        .progress-clock__rings {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1
+        }
+
+        .progress-clock__ring {
+            opacity: .1
+        }
+
+        .progress-clock__ring-fill {
+            transition: opacity 0 .3s linear, stroke-dashoffset .3s ease-in-out
+        }
+
+        .progress-clock__ring-fill--360 {
+            opacity: 0;
+            stroke-dashoffset: 0;
+            transition-duration: .3s
+        }
+
+        [data-group]:focus {
+            outline: transparent
+        }
+
+        [data-units] {
+            transition: opacity .2s linear
+        }
+
+        [data-group="d"]:focus,
+        [data-group="d"]:hover {
+            color: hsl(333, 90%, 55%)
+        }
+
+        [data-group="h"]:focus,
+        [data-group="h"]:hover {
+            color: hsl(33, 90%, 55%)
+        }
+
+        [data-group="m"]:focus,
+        [data-group="m"]:hover {
+            color: hsl(213, 90%, 55%)
+        }
+
+        [data-group="s"]:focus,
+        [data-group="s"]:hover {
+            color: hsl(273, 90%, 55%)
+        }
+
+        [data-group]:focus~.progress-clock__rings [data-units],
+        [data-group]:hover~.progress-clock__rings [data-units] {
+            opacity: .2
+        }
+
+        [data-group="d"]:focus~.progress-clock__rings [data-units="d"],
+        [data-group="d"]:hover~.progress-clock__rings [data-units="d"],
+        [data-group="h"]:focus~.progress-clock__rings [data-units="h"],
+        [data-group="h"]:hover~.progress-clock__rings [data-units="h"],
+        [data-group="m"]:focus~.progress-clock__rings [data-units="m"],
+        [data-group="m"]:hover~.progress-clock__rings [data-units="m"],
+        [data-group="s"]:focus~.progress-clock__rings [data-units="s"],
+        [data-group="s"]:hover~.progress-clock__rings [data-units="s"] {
+            opacity: 1
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: hsl(var(--hue), 10%, 10%);
+                --fg: hsl(var(--hue), 10%, 90%)
+            }
+
+            .progress-clock__ring {
+                opacity: .2
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-indigo-600" id="app">
+    <!-- New app modal -->
+    <div id="new-app-modal" tabindex="-1" aria-hidden="true"
+        class="hidden bg-gray-900 bg-opacity-70 dark:bg-opacity-80 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
+        <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <button type="button"
+                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-modal-toggle="new-app-modal">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="py-6 px-6 lg:px-8">
+                    <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">添加应用到分类：{{ currentAppTab }}
+                    </h3>
+
+                    <div :data-url="url"
+                        class="shadow-1xl cursor-pointer transform hover:scale-95 transition duration-300 relative flex flex-col items-center justify-between col-span-2 px-2 py-10 space-y-2 overflow-hidden bg-gray-100 sm:rounded-xl hover:bg-gray-200">
+                        <div
+                            class="p-3 flex h-16 w-16 shrink-0 grow-0 items-center justify-center text-white bg-blue-500 rounded-full">
+                            <i :class="icon" class="fa fa-2x"></i>
+                        </div>
+                        <h4 class="text-xl-1 font-medium text-gray-700">{{ name }}</h4>
+                        <p class="text-base text-center text-gray-500 hidden"></p>
+                    </div>
+                    <form class="space-y-6 pt-4" @submit="newApp">
+                        <div>
+                            <label for="name"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">名称</label>
+                            <input type="text" @focus="$event.target.select()" name="name" v-model="name" id="name"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="" required="">
+                        </div>
+                        <div>
+                            <label for="url"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">链接</label>
+                            <input type="text" @focus="$event.target.select()" name="url" id="url" v-model="url"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="https:// 完整地址" required="">
+                        </div>
+                        <label for="website-admin"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">图标</label>
+                        <div class="flex">
+                            <span @click="ramdonIcon"
+                                class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                <i class="fa-solid fa-shuffle"></i>
+                            </span>
+                            <input type="text" name="icon" @focus="$event.target.select()" id="icon" v-model="icon"
+                                id="website-admin"
+                                class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="">
+                        </div>
+                        <div class="flex justify-between">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input @click="correctBrands" v-model="checked" id="checked" type="checkbox"
+                                        :value="checked"
+                                        class="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800">
+                                </div>
+                                <label for="checked"
+                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">指定图标为 <i
+                                        class="text-red-500">fa-brands</i></label>
+                            </div>
+                            <a target="_blank" href="https://fontawesome.com/search"
+                                class="text-sm text-blue-700 hover:underline dark:text-blue-500">查找 fontawesome
+                                图标</a>
+                        </div>
+                        <button type="submit"
+                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">添加</button>
+                        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                            <a href="https://xinzhixiang.gumroad.com/l/zeestart" target="_blank" class="text-blue-700 hover:underline dark:text-blue-500">查看应用添加帮助</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Section Header -->
+    <section id="header-container" class="w-full px-3 antialiased bg-indigo-600 lg:px-6">
+        <div class="mx-auto max-w-7xl">
+            <nav class="flex items-center w-full h-24 select-none" x-data="{ showMenu: false }">
+                <div
+                    class="relative flex flex-wrap items-center justify-between w-full h-24 mx-auto font-medium md:justify-center">
+                    <a :href="brand.url" class="w-1/4 py-4 pl-6 pr-4 md:pl-4 md:py-0">
+                        <span class="text-indigo-300">.</span>
+                        <span class="p-1 text-xl font-black leading-none text-white select-none">
+                            <span class="">{{ brand.name }}</span>
+                        </span>
+                    </a>
+                    <div class="fixed top-0 left-0 z-40 items-center w-full h-full p-3 text-xl bg-gray-900 bg-opacity-60 md:text-sm lg:text-base md:w-3/4 md:bg-transparent md:p-0 md:relative md:flex"
+                        :class="{'flex': showMenu, 'hidden': !showMenu }">
+                        <div
+                            class="flex-col w-full h-auto h-full overflow-hidden bg-white rounded-lg select-none md:bg-transparent md:rounded-none md:relative md:flex md:flex-row md:overflow-auto">
+                            <div v-if="tabs.length"
+                                class="flex flex-col items-center justify-center w-full h-full mt-12 text-center text-indigo-700 md:text-indigo-200 md:w-2/3 md:mt-0 md:flex-row md:items-center">
+                                <a @click="switchApp" :data-tab-slug="item.slug" :data-tab-name="item.name"
+                                    v-for="item of tabs" :href="item.url"
+                                    class="inline-block px-4 py-2 mx-2 font-medium text-left text-indigo-700 md:text-white md:px-0 lg:mx-3 md:text-center hover:text-indigo-200">{{
+                                    item.name }}</a>
+                            </div>
+                            <div
+                                class="flex flex-col items-center justify-end w-full h-full pt-4 md:w-1/3 md:flex-row md:py-0">
+                                <a data-modal-toggle="new-app-modal" href="#_" v-if="edit.visible"
+                                    class="w-full pl-6 mr-0 text-indigo-200 hover:text-white md:pl-0 md:mr-3 lg:mr-5 md:w-auto">
+                                    + {{ currentAppTab }} app</a>
+                                <a :href="fullscreen.url" v-if="fullscreen.visible"
+                                    class="inline-flex items-center justify-center px-4 py-2 mr-1 text-base font-medium leading-6 text-indigo-600 whitespace-no-wrap transition duration-150 ease-in-out bg-white border border-transparent rounded-full hover:bg-white focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700">Fullscreen
+                                    ↗</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div @click="showMenu = !showMenu"
+                        class="absolute right-0 z-50 flex flex-col items-end w-10 h-10 p-2 mr-4 rounded-full cursor-pointer md:hidden hover:bg-gray-900 hover:bg-opacity-10 text-gray-100"
+                        :class="{ 'text-gray-400': showMenu, 'text-gray-100': !showMenu }">
+                        <svg class="w-6 h-6" x-show="!showMenu" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <svg class="w-6 h-6" x-show="showMenu" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg" style="display: none">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Section Clock -->
+    <section id="clock-container" class="hidden mt-12">
+        <div id="clock" class="progress-clock flex container mx-auto mt-12 align-middle opacity-0">
+            <button class="progress-clock__time-date text-indigo-300" data-group="d" type="button"
+                data-title="year_progress">
+                <small data-unit="w">Sunday</small><br />
+                <span data-unit="mo">January</span>
+                <span data-unit="d">1</span>
+            </button>
+            <button class="progress-clock__time-digit text-white" data-unit="h" data-group="h" type="button">
+                12</button><span class="progress-clock__time-colon text-white">:</span><button
+                class="progress-clock__time-digit text-white" data-unit="m" data-group="m" type="button">
+                00</button><span class="progress-clock__time-colon text-white">:</span><button
+                class="progress-clock__time-digit text-white" data-unit="s" data-group="s" type="button">
+                00
+            </button>
+            <span class="progress-clock__time-ampm text-indigo-200" data-unit="ap">AM</span>
+            <svg class="progress-clock__rings" width="256" height="256" viewBox="0 0 256 256">
+                <defs>
+                    <linearGradient id="pc-red" x1="1" y1="0.5" x2="0" y2="0.5">
+                        <stop offset="0%" stop-color="hsl(343,90%,55%)" />
+                        <stop offset="100%" stop-color="hsl(323,90%,55%)" />
+                    </linearGradient>
+                    <linearGradient id="pc-yellow" x1="1" y1="0.5" x2="0" y2="0.5">
+                        <stop offset="0%" stop-color="hsl(43,90%,55%)" />
+                        <stop offset="100%" stop-color="hsl(23,90%,55%)" />
+                    </linearGradient>
+                    <linearGradient id="pc-blue" x1="1" y1="0.5" x2="0" y2="0.5">
+                        <stop offset="0%" stop-color="hsl(223,90%,55%)" />
+                        <stop offset="100%" stop-color="hsl(203,90%,55%)" />
+                    </linearGradient>
+                    <linearGradient id="pc-purple" x1="1" y1="0.5" x2="0" y2="0.5">
+                        <stop offset="0%" stop-color="hsl(283,90%,55%)" />
+                        <stop offset="100%" stop-color="hsl(263,90%,55%)" />
+                    </linearGradient>
+                </defs>
+                <!-- Days of Month -->
+                <g data-units="d">
+                    <circle class="progress-clock__ring" cx="128" cy="128" r="74" fill="none" opacity="0.1"
+                        stroke="url(#pc-red)" stroke-width="12" />
+                    <circle class="progress-clock__ring-fill" data-ring="mo" cx="128" cy="128" r="74" fill="none"
+                        stroke="url(#pc-red)" stroke-width="12" stroke-dasharray="465 465" stroke-dashoffset="465"
+                        stroke-linecap="round" transform="rotate(-90,128,128)" />
+                </g>
+                <!-- Hours of Day -->
+                <g data-units="h">
+                    <circle class="progress-clock__ring" cx="128" cy="128" r="90" fill="none" opacity="0.1"
+                        stroke="url(#pc-yellow)" stroke-width="12" />
+                    <circle class="progress-clock__ring-fill" data-ring="d" cx="128" cy="128" r="90" fill="none"
+                        stroke="url(#pc-yellow)" stroke-width="12" stroke-dasharray="565.5 565.5"
+                        stroke-dashoffset="565.5" stroke-linecap="round" transform="rotate(-90,128,128)" />
+                </g>
+                <!-- Minutes of Hour -->
+                <g data-units="m">
+                    <circle class="progress-clock__ring" cx="128" cy="128" r="106" fill="none" opacity="0.1"
+                        stroke="url(#pc-blue)" stroke-width="12" />
+                    <circle class="progress-clock__ring-fill" data-ring="h" cx="128" cy="128" r="106" fill="none"
+                        stroke="url(#pc-blue)" stroke-width="12" stroke-dasharray="666 666" stroke-dashoffset="666"
+                        stroke-linecap="round" transform="rotate(-90,128,128)" />
+                </g>
+                <!-- Seconds of Minute -->
+                <g data-units="s">
+                    <circle class="progress-clock__ring" cx="128" cy="128" r="122" fill="none" opacity="0.1"
+                        stroke="url(#pc-purple)" stroke-width="12" />
+                    <circle class="progress-clock__ring-fill" data-ring="m" cx="128" cy="128" r="122" fill="none"
+                        stroke="url(#pc-purple)" stroke-width="12" stroke-dasharray="766.5 766.5"
+                        stroke-dashoffset="766.5" stroke-linecap="round" transform="rotate(-90,128,128)" />
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Section Note -->
+    <section id="note-containder">
+        <textarea id="note-textarea" rows="40"
+            class="hidden focus:outline-none p-10 w-full h-full text-xl text-white bg-indigo-600 rounded-none border-none dark:placeholder-gray-400 dark:text-white"
+            :placeholder="note"></textarea>
+    </section>
+
+    <!-- Section Apps -->
+    <section id="apps-container" class="py-1 bg-indigo-600">
+        <div class="container max-w-6xl mx-auto sm:text-center">
+            <div class="relative flex items-center max-w-md mx-auto mt-12 overflow-hidden text-center rounded-full">
+                <input type="text" v-model="searchText" v-on:keyup.enter="searchInput" name="input_text"
+                    :placeholder="search.provider"
+                    class="w-full h-12 px-6 py-2 font-medium text-indigo-800 focus:outline-none" />
+                <span class="relative top-0 right-0 block">
+                    <button type="button" @click="searchInput"
+                        class="inline-flex items-center w-32 h-12 px-8 text-base font-bold leading-6 text-white transition duration-150 ease-in-out bg-indigo-400 border border-transparent hover:bg-indigo-700 focus:outline-none active:bg-indigo-700">
+                        {{ search.name }}
+                    </button>
+                </span>
+            </div>
+
+            <div v-if="currentApps.length"
+                class="grid py-10 grid-cols-4 gap-8 mt-10 sm:grid-cols-8 lg:grid-cols-12 sm:px-8 xl:px-0">
+                <div @click="redirectToUrl" v-for="item of currentApps" :data-url="item.url"
+                    class="shadow-1xl cursor-pointer transform hover:scale-95 transition duration-300 relative flex flex-col items-center justify-between col-span-2 px-2 py-10 space-y-2 overflow-hidden bg-gray-100 sm:rounded-xl hover:bg-gray-200">
+                    <div
+                        class="p-3 flex h-16 w-16 shrink-0 grow-0 items-center justify-center text-white bg-blue-500 rounded-full">
+                        <i :class="item.icon" class="fa fa-2x"></i>
+                    </div>
+                    <h4 class="text-xl-1 font-medium text-gray-700">{{ item.name }}</h4>
+                    <p class="text-base text-center text-gray-500 hidden">
+                    </p>
+                </div>
+            </div>
+
+            <a :href="backend.url" v-if="backend.visible && currentAppSlug === 'home'"
+                class="px-10 mb-10 py-4 mt-10 sm:w-auto w-full text-center text-base font-medium inline-block rounded text-white hover:bg-blue-600 bg-blue-500">
+                {{ backend.name }}
+            </a>
+        </div>
+    </section>
+
+    <script data-cfasync="false" type="module">
+        const { createApp } = Vue;
+        createApp({
+            mounted() {
+                this.loadDefaultApps();
+            },
+            methods: {
+                showMenu() {
+                    this.showMenu = !this.showMenu;
+                    alert(this.showMenu);
+                },
+                redirectToUrl(e) {
+                    window.open(e.currentTarget.getAttribute("data-url"), this.openAppInNewTab ? "_blank" : "_self");
+                },
+
+                ramdonIcon() {
+                    const icons = ["0", "1", "2", "3", "4", "42-group", "5", "500px", "6", "7", "8", "9", "a", "accessible-icon", "accusoft", "address-book", "address-card", "adn", "adversal", "affiliatetheme", "airbnb", "algolia", "align-center", "align-justify", "align-left", "align-right", "alipay", "amazon-pay", "amazon", "amilia", "anchor-circle-check", "anchor-circle-exclamation", "anchor-circle-xmark", "anchor-lock", "anchor", "android", "angellist", "angle-down", "angle-left", "angle-right", "angle-up", "angles-down", "angles-left", "angles-right", "angles-up", "angrycreative", "angular", "ankh", "app-store-ios", "app-store", "apper", "apple-pay", "apple-whole", "apple", "archway", "arrow-down-1-9", "arrow-down-9-1", "arrow-down-a-z", "arrow-down-long", "arrow-down-short-wide", "arrow-down-up-across-line", "arrow-down-up-lock", "arrow-down-wide-short", "arrow-down-z-a", "arrow-down", "arrow-left-long", "arrow-left", "arrow-pointer", "arrow-right-arrow-left", "arrow-right-from-bracket", "arrow-right-long", "arrow-right-to-bracket", "arrow-right-to-city", "arrow-right", "arrow-rotate-left", "arrow-rotate-right", "arrow-trend-down", "arrow-trend-up", "arrow-turn-down", "arrow-turn-up", "arrow-up-1-9", "arrow-up-9-1", "arrow-up-a-z", "arrow-up-from-bracket", "arrow-up-from-ground-water", "arrow-up-from-water-pump", "arrow-up-long", "arrow-up-right-dots", "arrow-up-right-from-square", "arrow-up-short-wide", "arrow-up-wide-short", "arrow-up-z-a", "arrow-up", "arrows-down-to-line", "arrows-down-to-people", "arrows-left-right-to-line", "arrows-left-right", "arrows-rotate", "arrows-spin", "arrows-split-up-and-left", "arrows-to-circle", "arrows-to-dot", "arrows-to-eye", "arrows-turn-right", "arrows-turn-to-dots", "arrows-up-down-left-right", "arrows-up-down", "arrows-up-to-line", "artstation", "asterisk", "asymmetrik", "at", "atlassian", "atom", "audible", "audio-description", "austral-sign", "autoprefixer", "avianex", "aviato", "award", "aws", "b", "baby-carriage", "baby", "backward-fast", "backward-step", "backward", "bacon", "bacteria", "bacterium", "bag-shopping", "bahai", "baht-sign", "ban-smoking", "ban", "bandage", "bandcamp", "barcode", "bars-progress", "bars-staggered", "bars", "baseball-bat-ball", "baseball", "basket-shopping", "basketball", "bath", "battery-empty", "battery-full", "battery-half", "battery-quarter", "battery-three-quarters", "battle-net", "bed-pulse", "bed", "beer-mug-empty", "behance", "bell-concierge", "bell-slash", "bell", "bezier-curve", "bicycle", "bilibili", "bimobject", "binoculars", "biohazard", "bitbucket", "bitcoin-sign", "bitcoin", "bity", "black-tie", "blackberry", "blender-phone", "blender", "blog", "blogger-b", "blogger", "bluetooth-b", "bluetooth", "bold", "bolt-lightning", "bolt", "bomb", "bone", "bong", "book-atlas", "book-bible", "book-bookmark", "book-journal-whills", "book-medical", "book-open-reader", "book-open", "book-quran", "book-skull", "book-tanakh", "book", "bookmark", "bootstrap", "border-all", "border-none", "border-top-left", "bore-hole", "bots", "bottle-droplet", "bottle-water", "bowl-food", "bowl-rice", "bowling-ball", "box-archive", "box-open", "box-tissue", "box", "boxes-packing", "boxes-stacked", "braille", "brain", "brazilian-real-sign", "bread-slice", "bridge-circle-check", "bridge-circle-exclamation", "bridge-circle-xmark", "bridge-lock", "bridge-water", "bridge", "briefcase-medical", "briefcase", "broom-ball", "broom", "brush", "btc", "bucket", "buffer", "bug-slash", "bug", "bugs", "building-circle-arrow-right", "building-circle-check", "building-circle-exclamation", "building-circle-xmark", "building-columns", "building-flag", "building-lock", "building-ngo", "building-shield", "building-un", "building-user", "building-wheat", "building", "bullhorn", "bullseye", "burger", "buromobelexperte", "burst", "bus-simple", "bus", "business-time", "buy-n-large", "buysellads", "c", "cable-car", "cake-candles", "calculator", "calendar-check", "calendar-day", "calendar-days", "calendar-minus", "calendar-plus", "calendar-week", "calendar-xmark", "calendar", "camera-retro", "camera-rotate", "camera", "campground", "canadian-maple-leaf", "candy-cane", "cannabis", "capsules", "car-battery", "car-burst", "car-on", "car-rear", "car-side", "car-tunnel", "car", "caravan", "caret-down", "caret-left", "caret-right", "caret-up", "carrot", "cart-arrow-down", "cart-flatbed-suitcase", "cart-flatbed", "cart-plus", "cart-shopping", "cash-register", "cat", "cc-amazon-pay", "cc-amex", "cc-apple-pay", "cc-diners-club", "cc-discover", "cc-jcb", "cc-mastercard", "cc-paypal", "cc-stripe", "cc-visa", "cedi-sign", "cent-sign", "centercode", "centos", "certificate", "chair", "chalkboard-user", "chalkboard", "champagne-glasses", "charging-station", "chart-area", "chart-bar", "chart-column", "chart-gantt", "chart-line", "chart-pie", "chart-simple", "check-double", "check-to-slot", "check", "cheese", "chess-bishop", "chess-board", "chess-king", "chess-knight", "chess-pawn", "chess-queen", "chess-rook", "chess", "chevron-down", "chevron-left", "chevron-right", "chevron-up", "child-dress", "child-reaching", "child-rifle", "child", "children", "chrome", "chromecast", "church", "circle-arrow-down", "circle-arrow-left", "circle-arrow-right", "circle-arrow-up", "circle-check", "circle-chevron-down", "circle-chevron-left", "circle-chevron-right", "circle-chevron-up", "circle-dollar-to-slot", "circle-dot", "circle-down", "circle-exclamation", "circle-h", "circle-half-stroke", "circle-info", "circle-left", "circle-minus", "circle-nodes", "circle-notch", "circle-pause", "circle-play", "circle-plus", "circle-question", "circle-radiation", "circle-right", "circle-stop", "circle-up", "circle-user", "circle-xmark", "circle", "city", "clapperboard", "clipboard-check", "clipboard-list", "clipboard-question", "clipboard-user", "clipboard", "clock-rotate-left", "clock", "clone", "closed-captioning", "cloud-arrow-down", "cloud-arrow-up", "cloud-bolt", "cloud-meatball", "cloud-moon-rain", "cloud-moon", "cloud-rain", "cloud-showers-heavy", "cloud-showers-water", "cloud-sun-rain", "cloud-sun", "cloud", "cloudflare", "cloudscale", "cloudsmith", "cloudversify", "clover", "cmplid", "code-branch", "code-commit", "code-compare", "code-fork", "code-merge", "code-pull-request", "code", "codepen", "codiepie", "coins", "colon-sign", "comment-dollar", "comment-dots", "comment-medical", "comment-slash", "comment-sms", "comment", "comments-dollar", "comments", "compact-disc", "compass-drafting", "compass", "compress", "computer-mouse", "computer", "confluence", "connectdevelop", "contao", "cookie-bite", "cookie", "copy", "copyright", "cotton-bureau", "couch", "cow", "cpanel", "creative-commons-by", "creative-commons-nc-eu", "creative-commons-nc-jp", "creative-commons-nc", "creative-commons-nd", "creative-commons-pd-alt", "creative-commons-pd", "creative-commons-remix", "creative-commons-sa", "creative-commons-sampling-plus", "creative-commons-sampling", "creative-commons-share", "creative-commons-zero", "creative-commons", "credit-card", "critical-role", "crop-simple", "crop", "cross", "crosshairs", "crow", "crown", "crutch", "cruzeiro-sign", "css3-alt", "css3", "cube", "cubes-stacked", "cubes", "cuttlefish", "d-and-d-beyond", "d-and-d", "d", "dailymotion", "dashcube", "database", "deezer", "delete-left", "delicious", "democrat", "deploydog", "deskpro", "desktop", "dev", "deviantart", "dharmachakra", "dhl", "diagram-next", "diagram-predecessor", "diagram-project", "diagram-successor", "diamond-turn-right", "diamond", "diaspora", "dice-d20", "dice-d6", "dice-five", "dice-four", "dice-one", "dice-six", "dice-three", "dice-two", "dice", "digg", "digital-ocean", "discord", "discourse", "disease", "display", "divide", "dna", "dochub", "docker", "dog", "dollar-sign", "dolly", "dong-sign", "door-closed", "door-open", "dove", "down-left-and-up-right-to-center", "down-long", "download", "draft2digital", "dragon", "draw-polygon", "dribbble", "dropbox", "droplet-slash", "droplet", "drum-steelpan", "drum", "drumstick-bite", "drupal", "dumbbell", "dumpster-fire", "dumpster", "dungeon", "dyalog", "e", "ear-deaf", "ear-listen", "earlybirds", "earth-africa", "earth-americas", "earth-asia", "earth-europe", "earth-oceania", "ebay", "edge-legacy", "edge", "egg", "eject", "elementor", "elevator", "ellipsis-vertical", "ellipsis", "ello", "ember", "empire", "envelope-circle-check", "envelope-open-text", "envelope-open", "envelope", "envelopes-bulk", "envira", "equals", "eraser", "erlang", "ethereum", "ethernet", "etsy", "euro-sign", "evernote", "exclamation", "expand", "expeditedssl", "explosion", "eye-dropper", "eye-low-vision", "eye-slash", "eye", "f", "face-angry", "face-dizzy", "face-flushed", "face-frown-open", "face-frown", "face-grimace", "face-grin-beam-sweat", "face-grin-beam", "face-grin-hearts", "face-grin-squint-tears", "face-grin-squint", "face-grin-stars", "face-grin-tears", "face-grin-tongue-squint", "face-grin-tongue-wink", "face-grin-tongue", "face-grin-wide", "face-grin-wink", "face-grin", "face-kiss-beam", "face-kiss-wink-heart", "face-kiss", "face-laugh-beam", "face-laugh-squint", "face-laugh-wink", "face-laugh", "face-meh-blank", "face-meh", "face-rolling-eyes", "face-sad-cry", "face-sad-tear", "face-smile-beam", "face-smile-wink", "face-smile", "face-surprise", "face-tired", "facebook-f", "facebook-messenger", "facebook", "fan", "fantasy-flight-games", "faucet-drip", "faucet", "fax", "feather-pointed", "feather", "fedex", "fedora", "ferry", "figma", "file-arrow-down", "file-arrow-up", "file-audio", "file-circle-check", "file-circle-exclamation", "file-circle-minus", "file-circle-plus", "file-circle-question", "file-circle-xmark", "file-code", "file-contract", "file-csv", "file-excel", "file-export", "file-image", "file-import", "file-invoice-dollar", "file-invoice", "file-lines", "file-medical", "file-pdf", "file-pen", "file-powerpoint", "file-prescription", "file-shield", "file-signature", "file-video", "file-waveform", "file-word", "file-zipper", "file", "fill-drip", "fill", "film", "filter-circle-dollar", "filter-circle-xmark", "filter", "fingerprint", "fire-burner", "fire-extinguisher", "fire-flame-curved", "fire-flame-simple", "fire", "firefox-browser", "firefox", "first-order-alt", "first-order", "firstdraft", "fish-fins", "fish", "flag-checkered", "flag-usa", "flag", "flask-vial", "flask", "flickr", "flipboard", "floppy-disk", "florin-sign", "fly", "folder-closed", "folder-minus", "folder-open", "folder-plus", "folder-tree", "folder", "font-awesome", "font", "fonticons-fi", "fonticons", "football", "fort-awesome-alt", "fort-awesome", "forumbee", "forward-fast", "forward-step", "forward", "foursquare", "franc-sign", "free-code-camp", "freebsd", "frog", "fulcrum", "futbol", "g", "galactic-republic", "galactic-senate", "gamepad", "gas-pump", "gauge-high", "gauge-simple-high", "gauge-simple", "gauge", "gavel", "gear", "gears", "gem", "genderless", "get-pocket", "gg-circle", "gg", "ghost", "gift", "gifts", "git-alt", "git", "github-alt", "github", "gitkraken", "gitlab", "gitter", "glass-water-droplet", "glass-water", "glasses", "glide-g", "glide", "globe", "gofore", "golang", "golf-ball-tee", "goodreads-g", "goodreads", "google-drive", "google-pay", "google-play", "google-plus-g", "google-plus", "google-wallet", "google", "gopuram", "graduation-cap", "gratipay", "grav", "greater-than-equal", "greater-than", "grip-lines-vertical", "grip-lines", "grip-vertical", "grip", "gripfire", "group-arrows-rotate", "grunt", "guarani-sign", "guilded", "guitar", "gulp", "gun", "h", "hacker-news", "hackerrank", "hammer", "hamsa", "hand-back-fist", "hand-dots", "hand-fist", "hand-holding-dollar", "hand-holding-droplet", "hand-holding-hand", "hand-holding-heart", "hand-holding-medical", "hand-holding", "hand-lizard", "hand-middle-finger", "hand-peace", "hand-point-down", "hand-point-left", "hand-point-right", "hand-point-up", "hand-pointer", "hand-scissors", "hand-sparkles", "hand-spock", "hand", "handcuffs", "hands-asl-interpreting", "hands-bound", "hands-bubbles", "hands-clapping", "hands-holding-child", "hands-holding-circle", "hands-holding", "hands-praying", "hands", "handshake-angle", "handshake-simple-slash", "handshake-simple", "handshake-slash", "handshake", "hanukiah", "hard-drive", "hashnode", "hashtag", "hat-cowboy-side", "hat-cowboy", "hat-wizard", "head-side-cough-slash", "head-side-cough", "head-side-mask", "head-side-virus", "heading", "headphones-simple", "headphones", "headset", "heart-circle-bolt", "heart-circle-check", "heart-circle-exclamation", "heart-circle-minus", "heart-circle-plus", "heart-circle-xmark", "heart-crack", "heart-pulse", "heart", "helicopter-symbol", "helicopter", "helmet-safety", "helmet-un", "highlighter", "hill-avalanche", "hill-rockslide", "hippo", "hips", "hire-a-helper", "hive", "hockey-puck", "holly-berry", "hooli", "hornbill", "horse-head", "horse", "hospital-user", "hospital", "hot-tub-person", "hotdog", "hotel", "hotjar", "hourglass-end", "hourglass-half", "hourglass-start", "hourglass", "house-chimney-crack", "house-chimney-medical", "house-chimney-user", "house-chimney-window", "house-chimney", "house-circle-check", "house-circle-exclamation", "house-circle-xmark", "house-crack", "house-fire", "house-flag", "house-flood-water-circle-arrow-right", "house-flood-water", "house-laptop", "house-lock", "house-medical-circle-check", "house-medical-circle-exclamation", "house-medical-circle-xmark", "house-medical-flag", "house-medical", "house-signal", "house-tsunami", "house-user", "house", "houzz", "hryvnia-sign", "html5", "hubspot", "hurricane", "i-cursor", "i", "ice-cream", "icicles", "icons", "id-badge", "id-card-clip", "id-card", "ideal", "igloo", "image-portrait", "image", "images", "imdb", "inbox", "indent", "indian-rupee-sign", "industry", "infinity", "info", "instagram", "instalod", "intercom", "internet-explorer", "invision", "ioxhost", "italic", "itch-io", "itunes-note", "itunes", "j", "jar-wheat", "jar", "java", "jedi-order", "jedi", "jenkins", "jet-fighter-up", "jet-fighter", "jira", "joget", "joint", "joomla", "js", "jsfiddle", "jug-detergent", "k", "kaaba", "kaggle", "key", "keybase", "keyboard", "keycdn", "khanda", "kickstarter-k", "kickstarter", "kip-sign", "kit-medical", "kitchen-set", "kiwi-bird", "korvue", "l", "land-mine-on", "landmark-dome", "landmark-flag", "landmark", "language", "laptop-code", "laptop-file", "laptop-medical", "laptop", "laravel", "lari-sign", "lastfm", "layer-group", "leaf", "leanpub", "left-long", "left-right", "lemon", "less-than-equal", "less-than", "less", "life-ring", "lightbulb", "line", "lines-leaning", "link-slash", "link", "linkedin-in", "linkedin", "linode", "linux", "lira-sign", "list-check", "list-ol", "list-ul", "list", "list.txt litecoin-sign", "location-arrow", "location-crosshairs", "location-dot", "location-pin-lock", "location-pin", "lock-open", "lock", "locust", "lungs-virus", "lungs", "lyft", "m", "magento", "magnet", "magnifying-glass-arrow-right", "magnifying-glass-chart", "magnifying-glass-dollar", "magnifying-glass-location", "magnifying-glass-minus", "magnifying-glass-plus", "magnifying-glass", "mailchimp", "manat-sign", "mandalorian", "map-location-dot", "map-location", "map-pin", "map", "markdown", "marker", "mars-and-venus-burst", "mars-and-venus", "mars-double", "mars-stroke-right", "mars-stroke-up", "mars-stroke", "mars", "martini-glass-citrus", "martini-glass-empty", "martini-glass", "mask-face", "mask-ventilator", "mask", "masks-theater", "mastodon", "mattress-pillow", "maxcdn", "maximize", "mdb", "medal", "medapps", "medium", "medrt", "meetup", "megaport", "memory", "mendeley", "menorah", "mercury", "message", "meta", "meteor", "microblog", "microchip", "microphone-lines-slash", "microphone-lines", "microphone-slash", "microphone", "microscope", "microsoft", "mill-sign", "minimize", "minus", "mitten", "mix", "mixcloud", "mixer", "mizuni", "mobile-button", "mobile-retro", "mobile-screen-button", "mobile-screen", "mobile", "modx", "monero", "money-bill-1-wave", "money-bill-1", "money-bill-transfer", "money-bill-trend-up", "money-bill-wave", "money-bill-wheat", "money-bill", "money-bills", "money-check-dollar", "money-check", "monument", "moon", "mortar-pestle", "mosque", "mosquito-net", "mosquito", "motorcycle", "mound", "mountain-city", "mountain-sun", "mountain", "mug-hot", "mug-saucer", "music", "n", "naira-sign", "napster", "neos", "network-wired", "neuter", "newspaper", "nfc-directional", "nfc-symbol", "nimblr", "node-js", "node", "not-equal", "note-sticky", "notes-medical", "npm", "ns8", "nutritionix", "o", "object-group", "object-ungroup", "octopus-deploy", "odnoklassniki", "oil-can", "oil-well", "old-republic", "om", "opencart", "openid", "opera", "optin-monster", "orcid", "osi", "otter", "outdent", "p", "padlet", "page4", "pagelines", "pager", "paint-roller", "paintbrush", "palette", "palfed", "pallet", "panorama", "paper-plane", "paperclip", "parachute-box", "paragraph", "passport", "paste", "patreon", "pause", "paw", "paypal", "peace", "pen-clip", "pen-fancy", "pen-nib", "pen-ruler", "pen-to-square", "pen", "pencil", "people-arrows", "people-carry-box", "people-group", "people-line", "people-pulling", "people-robbery", "people-roof", "pepper-hot", "perbyte", "percent", "periscope", "person-arrow-down-to-line", "person-arrow-up-from-line", "person-biking", "person-booth", "person-breastfeeding", "person-burst", "person-cane", "person-chalkboard", "person-circle-check", "person-circle-exclamation", "person-circle-minus", "person-circle-plus", "person-circle-question", "person-circle-xmark", "person-digging", "person-dots-from-line", "person-dress-burst", "person-dress", "person-drowning", "person-falling-burst", "person-falling", "person-half-dress", "person-harassing", "person-hiking", "person-military-pointing", "person-military-rifle", "person-military-to-person", "person-praying", "person-pregnant", "person-rays", "person-rifle", "person-running", "person-shelter", "person-skating", "person-skiing-nordic", "person-skiing", "person-snowboarding", "person-swimming", "person-through-window", "person-walking-arrow-loop-left", "person-walking-arrow-right", "person-walking-dashed-line-arrow-right", "person-walking-luggage", "person-walking-with-cane", "person-walking", "person", "peseta-sign", "peso-sign", "phabricator", "phoenix-framework", "phoenix-squadron", "phone-flip", "phone-slash", "phone-volume", "phone", "photo-film", "php", "pied-piper-alt", "pied-piper-hat", "pied-piper-pp", "pied-piper", "piggy-bank", "pills", "pinterest-p", "pinterest", "pix", "pizza-slice", "place-of-worship", "plane-arrival", "plane-circle-check", "plane-circle-exclamation", "plane-circle-xmark", "plane-departure", "plane-lock", "plane-slash", "plane-up", "plane", "plant-wilt", "plate-wheat", "play", "playstation", "plug-circle-bolt", "plug-circle-check", "plug-circle-exclamation", "plug-circle-minus", "plug-circle-plus", "plug-circle-xmark", "plug", "plus-minus", "plus", "podcast", "poo-storm", "poo", "poop", "power-off", "prescription-bottle-medical", "prescription-bottle", "prescription", "print", "product-hunt", "pump-medical", "pump-soap", "pushed", "puzzle-piece", "python", "q", "qq", "qrcode", "question", "quinscape", "quora", "quote-left", "quote-right", "r-project", "r", "radiation", "radio", "rainbow", "ranking-star", "raspberry-pi", "ravelry", "react", "reacteurope", "readme", "rebel", "receipt", "record-vinyl", "rectangle-ad", "rectangle-list", "rectangle-xmark", "recycle", "red-river", "reddit-alien", "reddit", "redhat", "registered", "renren", "repeat", "reply-all", "reply", "replyd", "republican", "researchgate", "resolving", "restroom", "retweet", "rev", "ribbon", "right-from-bracket", "right-left", "right-long", "right-to-bracket", "ring", "road-barrier", "road-bridge", "road-circle-check", "road-circle-exclamation", "road-circle-xmark", "road-lock", "road-spikes", "road", "robot", "rocket", "rocketchat", "rockrms", "rotate-left", "rotate-right", "rotate", "route", "rss", "ruble-sign", "rug", "ruler-combined", "ruler-horizontal", "ruler-vertical", "ruler", "rupee-sign", "rupiah-sign", "rust", "s", "sack-dollar", "sack-xmark", "safari", "sailboat", "salesforce", "sass", "satellite-dish", "satellite", "scale-balanced", "scale-unbalanced-flip", "scale-unbalanced", "schlix", "school-circle-check", "school-circle-exclamation", "school-circle-xmark", "school-flag", "school-lock", "school", "scissors", "screenpal", "screwdriver-wrench", "screwdriver", "scribd", "scroll-torah", "scroll", "sd-card", "searchengin", "section", "seedling", "sellcast", "sellsy", "server", "servicestack", "shapes", "share-from-square", "share-nodes", "share", "sheet-plastic", "shekel-sign", "shield-cat", "shield-dog", "shield-halved", "shield-heart", "shield-virus", "shield", "ship", "shirt", "shirtsinbulk", "shoe-prints", "shop-lock", "shop-slash", "shop", "shopify", "shopware", "shower", "shrimp", "shuffle", "shuttle-space", "sign-hanging", "signal", "signature", "signs-post", "sim-card", "simplybuilt", "sink", "sistrix", "sitemap", "sith", "sitrox", "sketch", "skull-crossbones", "skull", "skyatlas", "skype", "slack", "slash", "sleigh", "sliders", "slideshare", "smog", "smoking", "snapchat", "snowflake", "snowman", "snowplow", "soap", "socks", "solar-panel", "sort-down", "sort-up", "sort", "soundcloud", "sourcetree", "spa", "space-awesome", "spaghetti-monster-flying", "speakap", "speaker-deck", "spell-check", "spider", "spinner", "splotch", "spoon", "spotify", "spray-can-sparkles", "spray-can", "square-arrow-up-right", "square-behance", "square-caret-down", "square-caret-left", "square-caret-right", "square-caret-up", "square-check", "square-dribbble", "square-envelope", "square-facebook", "square-font-awesome-stroke", "square-font-awesome", "square-full", "square-git", "square-github", "square-gitlab", "square-google-plus", "square-h", "square-hacker-news", "square-instagram", "square-js", "square-lastfm", "square-minus", "square-nfi", "square-odnoklassniki", "square-parking", "square-pen", "square-person-confined", "square-phone-flip", "square-phone", "square-pied-piper", "square-pinterest", "square-plus", "square-poll-horizontal", "square-poll-vertical", "square-reddit", "square-root-variable", "square-rss", "square-share-nodes", "square-snapchat", "square-steam", "square-tumblr", "square-twitter", "square-up-right", "square-viadeo", "square-vimeo", "square-virus", "square-whatsapp", "square-xing", "square-xmark", "square-youtube", "square", "squarespace", "stack-exchange", "stack-overflow", "stackpath", "staff-snake", "stairs", "stamp", "stapler", "star-and-crescent", "star-half-stroke", "star-half", "star-of-david", "star-of-life", "star", "staylinked", "steam-symbol", "steam", "sterling-sign", "stethoscope", "sticker-mule", "stop", "stopwatch-20", "stopwatch", "store-slash", "store", "strava", "street-view", "strikethrough", "stripe-s", "stripe", "stroopwafel", "studiovinari", "stumbleupon-circle", "stumbleupon", "subscript", "suitcase-medical", "suitcase-rolling", "suitcase", "sun-plant-wilt", "sun", "superpowers", "superscript", "supple", "suse", "swatchbook", "swift", "symfony", "synagogue", "syringe", "t", "table-cells-large", "table-cells", "table-columns", "table-list", "table-tennis-paddle-ball", "table", "tablet-button", "tablet-screen-button", "tablet", "tablets", "tachograph-digital", "tag", "tags", "tape", "tarp-droplet", "tarp", "taxi", "teamspeak", "teeth-open", "teeth", "telegram", "temperature-arrow-down", "temperature-arrow-up", "temperature-empty", "temperature-full", "temperature-half", "temperature-high", "temperature-low", "temperature-quarter", "temperature-three-quarters", "tencent-weibo", "tenge-sign", "tent-arrow-down-to-line", "tent-arrow-left-right", "tent-arrow-turn-left", "tent-arrows-down", "tent", "tents", "terminal", "text-height", "text-slash", "text-width", "the-red-yeti", "themeco", "themeisle", "thermometer", "think-peaks", "thumbs-down", "thumbs-up", "thumbtack", "ticket-simple", "ticket", "tiktok", "timeline", "toggle-off", "toggle-on", "toilet-paper-slash", "toilet-paper", "toilet-portable", "toilet", "toilets-portable", "toolbox", "tooth", "torii-gate", "tornado", "tower-broadcast", "tower-cell", "tower-observation", "tractor", "trade-federation", "trademark", "traffic-light", "trailer", "train-subway", "train-tram", "train", "transgender", "trash-arrow-up", "trash-can-arrow-up", "trash-can", "trash", "tree-city", "tree", "trello", "triangle-exclamation", "trophy", "trowel-bricks", "trowel", "truck-arrow-right", "truck-droplet", "truck-fast", "truck-field-un", "truck-field", "truck-front", "truck-medical", "truck-monster", "truck-moving", "truck-pickup", "truck-plane", "truck-ramp-box", "truck", "tty", "tumblr", "turkish-lira-sign", "turn-down", "turn-up", "tv", "twitch", "twitter", "typo3", "u", "uber", "ubuntu", "uikit", "umbraco", "umbrella-beach", "umbrella", "uncharted", "underline", "uniregistry", "unity", "universal-access", "unlock-keyhole", "unlock", "unsplash", "untappd", "up-down-left-right", "up-down", "up-long", "up-right-and-down-left-from-center", "up-right-from-square", "upload", "ups", "usb", "user-astronaut", "user-check", "user-clock", "user-doctor", "user-gear", "user-graduate", "user-group", "user-injured", "user-large-slash", "user-large", "user-lock", "user-minus", "user-ninja", "user-nurse", "user-pen", "user-plus", "user-secret", "user-shield", "user-slash", "user-tag", "user-tie", "user-xmark", "user", "users-between-lines", "users-gear", "users-line", "users-rays", "users-rectangle", "users-slash", "users-viewfinder", "users", "usps", "ussunnah", "utensils", "v", "vaadin", "van-shuttle", "vault", "vector-square", "venus-double", "venus-mars", "venus", "vest-patches", "vest", "viacoin", "viadeo", "vial-circle-check", "vial-virus", "vial", "vials", "viber", "video-slash", "video", "vihara", "vimeo-v", "vimeo", "vine", "virus-covid-slash", "virus-covid", "virus-slash", "virus", "viruses", "vk", "vnv", "voicemail", "volcano", "volleyball", "volume-high", "volume-low", "volume-off", "volume-xmark", "vr-cardboard", "vuejs", "w", "walkie-talkie", "wallet", "wand-magic-sparkles", "wand-magic", "wand-sparkles", "warehouse", "watchman-monitoring", "water-ladder", "water", "wave-square", "waze", "weebly", "weibo", "weight-hanging", "weight-scale", "weixin", "whatsapp", "wheat-awn-circle-exclamation", "wheat-awn", "wheelchair-move", "wheelchair", "whiskey-glass", "whmcs", "wifi", "wikipedia-w", "wind", "window-maximize", "window-minimize", "window-restore", "windows", "wine-bottle", "wine-glass-empty", "wine-glass", "wirsindhandwerk", "wix", "wizards-of-the-coast", "wodu", "wolf-pack-battalion", "won-sign", "wordpress-simple", "wordpress", "worm", "wpbeginner", "wpexplorer", "wpforms", "wpressr", "wrench", "x-ray", "x", "xbox", "xing", "xmark", "xmarks-lines", "y-combinator", "y", "yahoo", "yammer", "yandex-international", "yandex", "yarn", "yelp", "yen-sign", "yin-yang", "yoast", "youtube", "z", "zhihu"]
+                    var random = Math.floor(Math.random() * icons.length);
+                    var icon = icons[random];
+                    var fa_text = "fa-" + icon;
+                    this.icon = fa_text;
+                    this.checked = false;
+                },
+
+                correctBrands: function () {
+                    if (this.icon.includes("fa-brands")) {
+                        this.icon = this.icon.replace("fa-brands ", "");
+                    } else {
+                        this.icon = "fa-brands " + this.icon;
+                    }
+                },
+                // Search
+                searchInput: function () {
+                    var search = this.searchText;
+                    if (search.includes(".")) {
+                        if (!search.includes("http")) {
+                            search = "http://" + search;
+                        }
+                        window.location.href = search;
+                    } else {
+                        window.location.href =
+                            this.search.url + search;
+                    }
+                },
+                newApp(e) {
+                    e.preventDefault();
+
+                    var newapp = {
+                        name: this.name,
+                        url: this.url,
+                        icon: this.icon,
+                        tab_slug: this.currentAppSlug
+                    };
+
+                    this.currentApps.push(newapp);
+                    this.apps.push(newapp);
+
+                    // reset form
+                    this.name = "名称";
+                    this.url = "https://";
+                    this.icon = "fas fa-link";
+                    this.currentAppSlug = "home";
+                    this.checked = false;
+
+                    var el = document.getElementById("new-app-modal");
+                    const modal = new Modal(el);
+
+                    // close modal hack
+                    modal.hide()
+
+                    document
+                        .querySelector(".bg-opacity-50")
+                        .classList.add("hidden");
+
+                    this.exportAppData();
+                },
+
+                switchApp(e) {
+
+                    e.preventDefault();
+
+                    const tab_url = e.target.getAttribute("href");
+                    if (tab_url.includes("http")) {
+                        window.location.href = tab_url;
+                        return;
+                    }
+
+                    const tab_slug = e.currentTarget.getAttribute("data-tab-slug");
+                    const tab_name = e.currentTarget.getAttribute("data-tab-name");
+
+                    this.currentAppTab = tab_name;
+                    this.currentAppSlug = tab_slug;
+                    this.loadDefaultApps(tab_slug);
+
+                },
+
+                loadDefaultApps(tab_slug = this.currentAppSlug) {
+                    this.apps.forEach((app) => {
+                        if (app.tab_slug == tab_slug) {
+                            this.currentApps = [];
+                            setTimeout(() => {
+                                this.currentApps = this.currentApps.concat(app);
+                            }, 200);
+                        }
+
+                    });
+                },
+
+                exportAppData: function () {
+                    var apps_json = JSON.stringify(this.apps);
+                    navigator.clipboard
+                        .writeText(apps_json)
+                        .then(() => {
+                            alert("添加成功，apps 数据已复制到剪贴板，可粘贴替换源码 apps 部分");
+                        })
+                        .catch((err) => {
+                            console.error("剪切板写入失败: ", err);
+                        });
+                },
+            },
+            data() {
+                return {
+                    // name 和 url 可按需修改
+                    brand: {
+                        name: "ZeeStart",
+                        url: "https://xxz.cc/?z",
+                        visible: true,
+                    },
+                    edit: {
+                        name: "new",
+                        url: "http://10.0.0.200:8888/files/www/index.html",
+                        visible: true,
+                    },
+                    fullscreen: {
+                        name: "Fullscreen ↗",
+                        url: `https://v.qq.com/search_redirect.html?url=https://www.baomihua.com/go.aspx?url=${"https://xxz.cc/?z"}?baomihua.com=6d9f8ff320207962ed21bd9fc05eaa7c1665832902`,
+                        visible: true,
+                    },
+                    backend: {
+                        name: "ZeeWrt Backend",
+                        url: "http://10.0.0.200:8080/luci/",
+                        visible: true // or false
+                    },
+                    tabs: [
+                        {
+                            name: "Home",
+                            slug: "home",
+                            url: "#_",
+                        },
+                        {
+                            name: "Work",
+                            slug: "work",
+                            url: "#_",
+                        },
+                        {
+                            name: "NAS",
+                            slug: "nas",
+                            url: "#_",
+                        },
+                        {
+                            name: "TΞSLA",
+                            slug: "tesla",
+                            url: "https://www.tesla.com/",
+                        },
+                        {
+                            name: "Utility",
+                            slug: "utility",
+                            url: "#_",
+                        },
+                        // {
+                        //      name: "Gaming",
+                        //      slug: "gaming",
+                        //      url: "#_",
+                        // },
+                        // {
+                        //      name: "Development",
+                        //      slug: "development",
+                        //      url: "#_",
+                        // },
+                        // {
+                        //      name: "Other",
+                        //      slug: "other",
+                        //      url: "#_",
+                        // },
+                    ],
+                    // misc
+                    showMenu: false,
+                    // new app
+                    name: "名称",
+                    url: "https://",
+                    icon: "fa-link",
+                    checked: false,
+                    // tabs
+                    currentApps: [],
+                    currentAppTab: "Home",
+                    currentAppSlug: "home",
+                    openAppInNewTab: true, // false 为在当前标签页打开
+                    note: "What's in your mind...",
+                    // search
+                    search: {
+                        name: "Search",
+                        provider: "Google",
+                        url: "https://www.google.com/search?q="
+                    },
+                    apps:
+                        /// 以下整行为 apps 数据，双击替换。本行留作分界线，不要删除；添加 app 后，apps 数据粘贴到这里
+                        []
+                    /// 以上整行为 apps 数据，双击替换。本行留作分界线，不要删除：搜索直达关键词：ZeeAppData
+                };
+            },
+        }).mount("#app");
+
+        function changeTimezone(date, ianatz) {
+            // suppose the date is 12:00 UTC
+            var invdate = new Date(
+                date.toLocaleString("en-US", {
+                    timeZone: ianatz,
+                })
+            );
+
+            // then invdate will be 07:00 in Toronto
+            // and the diff is 5 hours
+            var diff = date.getTime() - invdate.getTime();
+
+            // so 12:00 in Toronto is 17:00 UTC
+            return new Date(date.getTime() - diff); // needs to substract
+        }
+        window.addEventListener("DOMContentLoaded", () => {
+            const clock = new ProgressClock("#clock");
+        });
+        class ProgressClock {
+            constructor(qs) {
+                this.el = document.querySelector(qs);
+                this.time = 0;
+                this.updateTimeout = null;
+                this.ringTimeouts = [];
+                this.update();
+            }
+            getDayOfWeek(day) {
+                switch (day) {
+                    case 1:
+                        return "周一";
+                    case 2:
+                        return "周二";
+                    case 3:
+                        return "周三";
+                    case 4:
+                        return "周四";
+                    case 5:
+                        return "周五";
+                    case 6:
+                        return "周六";
+                    default:
+                        return "周日";
+                }
+            }
+            getMonthInfo(mo, yr) {
+                switch (mo) {
+                    case 1:
+                        return { name: "2 / ", days: yr % 4 === 0 ? 29 : 28 };
+                    case 2:
+                        return { name: "3 / ", days: 31 };
+                    case 3:
+                        return { name: "4 / ", days: 30 };
+                    case 4:
+                        return { name: "5 / ", days: 31 };
+                    case 5:
+                        return { name: "6 / ", days: 30 };
+                    case 6:
+                        return { name: "7 / ", days: 31 };
+                    case 7:
+                        return { name: "8 / ", days: 31 };
+                    case 8:
+                        return { name: "9 / ", days: 30 };
+                    case 9:
+                        return { name: "10 / ", days: 31 };
+                    case 10:
+                        return { name: "11 / ", days: 30 };
+                    case 11:
+                        return { name: "12 / ", days: 31 };
+                    default:
+                        return { name: "1 / ", days: 31 };
+                }
+            }
+            update() {
+                var here = new Date();
+                var there = changeTimezone(here, "Asia/Shanghai");
+                this.time = there;
+
+                if (this.el) {
+                    // date and time
+                    const dayOfWeek = this.time.getDay();
+                    const year = this.time.getFullYear();
+                    const month = this.time.getMonth();
+                    const day = this.time.getDate();
+                    const hr = this.time.getHours();
+                    const min = this.time.getMinutes();
+                    const sec = this.time.getSeconds();
+                    const dayOfWeekName = this.getDayOfWeek(dayOfWeek);
+                    const monthInfo = this.getMonthInfo(month, year);
+                    const m_progress = sec / 60;
+                    const h_progress = (min + m_progress) / 60;
+                    const d_progress = (hr + h_progress) / 24;
+                    const daysLeft =
+                        (new Date(year, 11, 31) - this.time) / 1000 / 60 / 60 / 24;
+                    const daysInYear =
+                        (new Date(year, 11, 31) - new Date(year, 0, 0)) /
+                        1000 /
+                        60 /
+                        60 /
+                        24;
+                    const mo_progress = 1 - daysLeft / daysInYear;
+
+                    const units = [
+                        {
+                            label: "year_progress",
+                            value: `${year} 过去了 ${Math.round(
+                                mo_progress * 100
+                            )}%，还剩 ${Math.round(daysLeft)} 天`
+                        },
+                        {
+                            label: "w",
+                            value: dayOfWeekName,
+                        },
+                        {
+                            label: "mo",
+                            value: monthInfo.name,
+                            progress: mo_progress,
+                        },
+                        {
+                            label: "d",
+                            value: day,
+                            progress: d_progress,
+                        },
+                        {
+                            label: "h",
+                            value: hr > 12 ? hr - 12 : hr,
+                            progress: h_progress,
+                        },
+                        {
+                            label: "m",
+                            value: min < 10 ? "0" + min : min,
+                            progress: m_progress,
+                        },
+                        {
+                            label: "s",
+                            value: sec < 10 ? "0" + sec : sec,
+                        },
+                        {
+                            label: "ap",
+                            value: hr > 12 ? "下午" : "上午",
+                        },
+                    ];
+                    // flush out the timeouts
+                    this.ringTimeouts.forEach((t) => {
+                        clearTimeout(t);
+                    });
+                    this.ringTimeouts = [];
+                    // update the display
+                    units.forEach((u) => {
+                        // rings
+                        const ring = this.el.querySelector(`[data-ring="${u.label}"]`);
+                        if (ring) {
+                            const strokeDashArray = ring.getAttribute("stroke-dasharray");
+                            const fill360 = "progress-clock__ring-fill--360";
+                            if (strokeDashArray) {
+                                // calculate the stroke
+                                const circumference = +strokeDashArray.split(" ")[0];
+                                const strokeDashOffsetPct = 1 - u.progress;
+                                ring.setAttribute(
+                                    "stroke-dashoffset",
+                                    strokeDashOffsetPct * circumference
+                                );
+                                // add the fade-out transition, then remove it
+                                if (strokeDashOffsetPct === 1) {
+                                    ring.classList.add(fill360);
+                                    this.ringTimeouts.push(
+                                        setTimeout(() => {
+                                            ring.classList.remove(fill360);
+                                        }, 600)
+                                    );
+                                }
+                            }
+                        }
+                        // digits
+                        const unit = this.el.querySelector(`[data-unit="${u.label}"]`);
+                        if (unit) unit.innerText = u.value;
+
+                        // add title to element
+                        const title = this.el.querySelector(`[data-title="${u.label}"]`);
+                        // update attribute title
+                        if (title) title.setAttribute("title", u.value);
+                    });
+                }
+                clearTimeout(this.updateTimeout);
+                this.updateTimeout = setTimeout(this.update.bind(this), 1e3);
+            }
+        }
+
+        var timer;
+        var clock = document.getElementById("clock-container");
+        var clock_main = document.getElementById("clock");
+        var header = document.getElementById("header-container");
+        var apps = document.getElementById("apps-container");
+        var app = document.getElementById("app");
+        var modal = document.getElementById("new-app-modal");
+        var noteTextarea = document.getElementById("note-textarea");
+
+        function saveNote() {
+            localStorage.setItem("note", noteTextarea.value);
+        }
+
+        function loadNote() {
+            noteTextarea.value = localStorage.getItem("note");
+        }
+
+        // auto save and load note
+        loadNote();
+
+        noteTextarea.addEventListener("change", function () {
+            saveNote();
+        });
+
+        apps.addEventListener("dblclick", function () {
+            apps.classList.add("hidden");
+            noteTextarea.classList.remove("hidden");
+            noteTextarea.focus();
+        });
+
+        function showClock() {
+            if (noteTextarea.classList.contains("hidden") && modal.classList.contains("hidden")) {
+                apps.classList.add("transition-opacity", "ease-out", "duration-100", "opacity-0");
+                setTimeout(function () {
+                    apps.classList.add("hidden");
+                }, 300);
+                clock.classList.remove("hidden");
+                setTimeout(function () {
+                    clock_main.classList.add("transition-opacity", "ease-in", "duration-1000", "opacity-100");
+                }, 300);
+            }
+        }
+
+        function hideClock() {
+            apps.classList.remove("hidden");
+            setTimeout(function () {
+                apps.classList.remove("transition-opacity", "ease-out", "duration-600", "opacity-0");
+            }, 600);
+            clock.classList.add("hidden");
+            noteTextarea.classList.add("hidden");
+        }
+
+        function resetTimer() {
+            clearTimeout(timer);
+            timer = setTimeout(showClock, 5000);
+        }
+
+        function startTimer() {
+            timer = setTimeout(showClock, 5000);
+        }
+
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+
+        startTimer();
+
+        header.addEventListener("click", function () {
+            hideClock();
+        });
+
+        clock.addEventListener("click", function () {
+            hideClock();
+        });
+
+        app.addEventListener("click", function () {
+        });
+
+        var lastClientX;
+        var lastClientY;
+
+        header.addEventListener('mousemove', function (event) {
+            if (clock.classList.contains("hidden") && !noteTextarea.classList.contains("hidden")) {
+                return;
+            }
+
+            if (lastClientX === event.clientX && lastClientY === event.clientY) {
+                return;
+            }
+
+            lastClientX = event.clientX;
+            lastClientY = event.clientY;
+            hideClock();
+        }, false);
+
+    </script>
+    <script data-cfasync="false" src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+</body>
+</html>
