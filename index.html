@@ -4,148 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zee Startpage</title>
+    <title>Zee's Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <script data-cfasync="false"
         src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.41/vue.global.prod.min.js"></script>
     <style>
-        .progress-clock {
-            display: grid;
-            justify-content: center;
-            align-content: center;
-            position: relative;
-            text-align: center;
-            width: 32em;
-            height: 32em
-        }
-
-        .progress-clock__time-date,
-        .progress-clock__time-digit,
-        .progress-clock__time-colon,
-        .progress-clock__time-ampm {
-            transition: color .2s linear;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-            font-variant-numeric: tabular-nums
-        }
-
-        .progress-clock__time-date,
-        .progress-clock__time-digit {
-            background: transparent
-        }
-
-        .progress-clock__time-date,
-        .progress-clock__time-ampm {
-            grid-column: 1 / 6
-        }
-
-        .progress-clock__time-date {
-            font-size: 1.2em;
-            line-height: 1.33;
-            font-variant-numeric: tabular-nums
-        }
-
-        .progress-clock__time-digit,
-        .progress-clock__time-colon {
-            font-size: 4em;
-            font-weight: 400;
-            grid-row: 2;
-            font-variant-numeric: tabular-nums
-        }
-
-        .progress-clock__time-colon {
-            line-height: 1.275
-        }
-
-        .progress-clock__time-ampm {
-            cursor: default;
-            grid-row: 3
-        }
-
-        .progress-clock__rings {
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1
-        }
-
-        .progress-clock__ring {
-            opacity: .1
-        }
-
-        .progress-clock__ring-fill {
-            transition: opacity 0 .3s linear, stroke-dashoffset .3s ease-in-out
-        }
-
-        .progress-clock__ring-fill--360 {
-            opacity: 0;
-            stroke-dashoffset: 0;
-            transition-duration: .3s
-        }
-
-        [data-group]:focus {
-            outline: transparent
-        }
-
-        [data-units] {
-            transition: opacity .2s linear
-        }
-
-        [data-group="d"]:focus,
-        [data-group="d"]:hover {
-            color: hsl(333, 90%, 55%)
-        }
-
-        [data-group="h"]:focus,
-        [data-group="h"]:hover {
-            color: hsl(33, 90%, 55%)
-        }
-
-        [data-group="m"]:focus,
-        [data-group="m"]:hover {
-            color: hsl(213, 90%, 55%)
-        }
-
-        [data-group="s"]:focus,
-        [data-group="s"]:hover {
-            color: hsl(273, 90%, 55%)
-        }
-
-        [data-group]:focus~.progress-clock__rings [data-units],
-        [data-group]:hover~.progress-clock__rings [data-units] {
-            opacity: .2
-        }
-
-        [data-group="d"]:focus~.progress-clock__rings [data-units="d"],
-        [data-group="d"]:hover~.progress-clock__rings [data-units="d"],
-        [data-group="h"]:focus~.progress-clock__rings [data-units="h"],
-        [data-group="h"]:hover~.progress-clock__rings [data-units="h"],
-        [data-group="m"]:focus~.progress-clock__rings [data-units="m"],
-        [data-group="m"]:hover~.progress-clock__rings [data-units="m"],
-        [data-group="s"]:focus~.progress-clock__rings [data-units="s"],
-        [data-group="s"]:hover~.progress-clock__rings [data-units="s"] {
-            opacity: 1
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: hsl(var(--hue), 10%, 10%);
-                --fg: hsl(var(--hue), 10%, 90%)
-            }
-
-            .progress-clock__ring {
-                opacity: .2
-            }
-        }
+        .progress-clock{display:grid;justify-content:center;align-content:center;position:relative;text-align:center;width:32em;height:32em}.progress-clock__time-date,.progress-clock__time-digit,.progress-clock__time-colon,.progress-clock__time-ampm{transition:color .2s linear;-webkit-user-select:none;-moz-user-select:none;user-select:none;font-variant-numeric:tabular-nums}.progress-clock__time-date,.progress-clock__time-digit{background:transparent}.progress-clock__time-date,.progress-clock__time-ampm{grid-column:1 / 6}.progress-clock__time-date{font-size:1.2em;line-height:1.33;font-variant-numeric:tabular-nums}.progress-clock__time-digit,.progress-clock__time-colon{font-size:4em;font-weight:400;grid-row:2;font-variant-numeric:tabular-nums}.progress-clock__time-colon{line-height:1.275}.progress-clock__time-ampm{cursor:default;grid-row:3}.progress-clock__rings{display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1}.progress-clock__ring{opacity:.1}.progress-clock__ring-fill{transition:opacity 0 .3s linear,stroke-dashoffset .3s ease-in-out}.progress-clock__ring-fill--360{opacity:0;stroke-dashoffset:0;transition-duration:.3s}[data-group]:focus{outline:transparent}[data-units]{transition:opacity .2s linear}[data-group="d"]:focus,[data-group="d"]:hover{color:hsl(333,90%,55%)}[data-group="h"]:focus,[data-group="h"]:hover{color:hsl(33,90%,55%)}[data-group="m"]:focus,[data-group="m"]:hover{color:hsl(213,90%,55%)}[data-group="s"]:focus,[data-group="s"]:hover{color:hsl(273,90%,55%)}[data-group]:focus~.progress-clock__rings [data-units],[data-group]:hover~.progress-clock__rings [data-units]{opacity:.2}[data-group="d"]:focus~.progress-clock__rings [data-units="d"],[data-group="d"]:hover~.progress-clock__rings [data-units="d"],[data-group="h"]:focus~.progress-clock__rings [data-units="h"],[data-group="h"]:hover~.progress-clock__rings [data-units="h"],[data-group="m"]:focus~.progress-clock__rings [data-units="m"],[data-group="m"]:hover~.progress-clock__rings [data-units="m"],[data-group="s"]:focus~.progress-clock__rings [data-units="s"],[data-group="s"]:hover~.progress-clock__rings [data-units="s"]{opacity:1}@media (prefers-color-scheme: dark){:root{--bg:hsl(var(--hue),10%,10%);--fg:hsl(var(--hue),10%,90%)}.progress-clock__ring{opacity:.2}}
     </style>
 </head>
 
-<body class="bg-indigo-600" id="app">
+<body id="app">
     <!-- New app modal -->
     <div id="new-app-modal" tabindex="-1" aria-hidden="true"
         class="hidden bg-gray-900 bg-opacity-70 dark:bg-opacity-80 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
@@ -164,7 +33,11 @@
                     <span class="sr-only">Close modal</span>
                 </button>
                 <div class="py-6 px-6 lg:px-8">
-                    <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">添加应用到分类：{{ currentAppTab }}
+                    <h3 v-if="isNew && !app_data_exported"
+                        class="mb-4 text-xl font-medium text-gray-900 dark:text-white">New App in Tab: {{ currentAppTab }}
+                    </h3>
+                    <h3 v-if="isEdit && !app_data_exported && !isNew"
+                        class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit App: {{ name }}
                     </h3>
 
                     <div :data-url="url" v-if="!app_data_exported"
@@ -176,27 +49,28 @@
                         <h4 class="text-xl-1 font-medium text-gray-700">{{ name }}</h4>
                         <p class="text-base text-center text-gray-500 hidden"></p>
                     </div>
-                    <form v-if="!app_data_exported" class="space-y-6 pt-4" @submit="newApp">
+                    <form v-if="isNew && !app_data_exported || isEdit && !app_data_exported" class="space-y-6 pt-4"
+                        @submit="newApp">
                         <div>
                             <label for="name"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">名称</label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Name</label>
                             <input type="text" @focus="$event.target.select()" name="name" v-model="name" id="name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                 placeholder="" required="">
                         </div>
                         <div>
                             <label for="url"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">链接</label>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Url</label>
                             <input type="text" @focus="$event.target.select()" name="url" id="url" v-model="url"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                placeholder="https:// 完整地址" required="">
+                                placeholder="https://" required="">
                         </div>
                         <label for="website-admin"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">图标</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 hidden">Icon</label>
                         <div class="flex">
                             <span @click="ramdonIcon"
                                 class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 rounded-l-md border border-r-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                                <i class="fa-solid fa-shuffle"></i>
+                                Shffle Icon  <i class="ml-2 fa-solid fa-shuffle"></i>
                             </span>
                             <input type="text" name="icon" @focus="$event.target.select()" id="icon" v-model="icon"
                                 id="website-admin"
@@ -211,29 +85,30 @@
                                         class="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800">
                                 </div>
                                 <label for="checked"
-                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">指定图标为 <i
+                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Set Icon as <i
                                         class="text-red-500">fa-brands</i></label>
                             </div>
                             <a target="_blank" href="https://fontawesome.com/search"
-                                class="text-sm text-blue-700 hover:underline dark:text-blue-500">查找 fontawesome
-                                图标</a>
+                                class="text-sm text-blue-700 hover:underline dark:text-blue-500"> // FontAwesome
+                                Icons</a>
                         </div>
                         <button type="submit"
-                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">添加</button>
+                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{
+                            isNew? "Add" : "Update" }}</button>
                     </form>
                     <div v-if="app_data_exported">
                         <label for="app_data"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">当前数据</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">App Data</label>
                         <textarea v-on:focus="$event.target.select()" ref="clone" readonly id="app_data" rows="4"
                             :value="app_data"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Leave a comment..."></textarea>
+                            placeholder="Paste App Data into HTML file"></textarea>
                         <button
                             class="w-full mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            @click="copy">复制 Apps 数据</button>
+                            @click="copy">Copy App Data</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300 text-center mt-5">
-                            <a href="https://xinzhixiang.gumroad.com/l/zeestart" target="_blank"
-                                class="text-blue-700 hover:underline dark:text-blue-500">查看应用添加帮助</a>
+                            <a href="#" @click="addMoreApps"
+                                class="text-blue-700 hover:underline dark:text-blue-500">Add More App</a>
                         </div>
 
                     </div>
@@ -242,7 +117,7 @@
         </div>
     </div>
     <!-- Section Header -->
-    <section id="header-container" class="w-full px-3 antialiased bg-indigo-600 lg:px-6">
+    <section id="header-container" class="w-full px-3 antialiased lg:px-6">
         <div class="mx-auto max-w-7xl">
             <nav class="flex items-center w-full h-24 select-none" x-data="{ showMenu: false }">
                 <div
@@ -260,18 +135,25 @@
                             <div v-if="tabs.length"
                                 class="flex flex-col items-center justify-center w-full h-full mt-12 text-center text-indigo-700 md:text-indigo-200 md:w-2/3 md:mt-0 md:flex-row md:items-center">
                                 <a @click="switchApp" :data-tab-slug="item.slug" :data-tab-name="item.name"
-                                    v-for="item of tabs" :href="item.url"
+                                    :data-tab-bg="item.bgColor" v-for="item of tabs" :href="item.url"
                                     class="inline-block px-4 py-2 mx-2 font-medium text-left text-indigo-700 md:text-white md:px-0 lg:mx-3 md:text-center hover:text-indigo-200">{{
                                     item.name }}</a>
                             </div>
                             <div
                                 class="flex flex-col items-center justify-end w-full h-full pt-4 md:w-1/3 md:flex-row md:py-0">
-                                <a data-modal-toggle="new-app-modal" href="#_" v-if="edit.visible"
+                                <a v-if="isNew && !showExport" data-modal-toggle="new-app-modal" href="#_"
                                     class="w-full pl-6 mr-0 text-indigo-200 hover:text-white md:pl-0 md:mr-3 lg:mr-5 md:w-auto">
-                                    + {{ currentAppTab }} app</a>
+                                    + {{ currentAppTab }} App</a>
+
+                                <a v-if="showExport" @click="viewData" data-modal-toggle="new-app-modal" href="#_"
+                                    class="w-full pl-6 mr-0 text-indigo-200 hover:text-white md:pl-0 md:mr-3 lg:mr-5 md:w-auto">
+                                    Export Data</a>
+
+
                                 <a :href="fullscreen.url" v-if="fullscreen.visible"
-                                    class="inline-flex items-center justify-center px-4 py-2 mr-1 text-base font-medium leading-6 text-indigo-600 whitespace-no-wrap transition duration-150 ease-in-out bg-white border border-transparent rounded-full hover:bg-white focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700">Fullscreen
-                                    ↗</a>
+                                    class="inline-flex items-center justify-center px-4 py-2 mr-1 text-base font-medium leading-6 text-indigo-600 whitespace-no-wrap transition duration-150 ease-in-out bg-white border border-transparent rounded-full hover:bg-white focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700">{{
+                                    fullscreen.name }}
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -366,18 +248,18 @@
     </section>
 
     <!-- Section Note -->
-    <section id="note-containder">
+    <section id="note-containder" class="bg-indigo-600">
         <textarea id="note-textarea" rows="40"
-            class="hidden focus:outline-none p-10 w-full h-full text-xl text-white bg-indigo-600 rounded-none border-none dark:placeholder-gray-400 dark:text-white"
+            class="hidden bg-indigo-600 focus:outline-none p-10 w-full h-full text-xl text-white rounded-none border-none dark:placeholder-gray-400 dark:text-white"
             :placeholder="note"></textarea>
     </section>
 
     <!-- Section Apps -->
-    <section id="apps-container" class="py-1 bg-indigo-600">
-        <div class="container max-w-6xl mx-auto sm:text-center">
+    <section id="apps-container" class="py-1">
+        <div class="container max-w-6xl mx-auto sm:text-center px-2.5">
             <div class="relative flex items-center max-w-md mx-auto mt-12 overflow-hidden text-center rounded-full">
-                <input type="text" v-model="searchText" v-on:keyup.enter="searchInput" name="input_text"
-                    :placeholder="search.provider"
+                <input v-on:focus="$event.target.select()" type="text" v-model="searchText" :value="searchText"
+                    v-on:keyup.enter="searchInput" name="input_text" :placeholder="search.provider"
                     class="w-full h-12 px-6 py-2 font-medium text-indigo-800 focus:outline-none" />
                 <span class="relative top-0 right-0 block">
                     <button type="button" @click="searchInput"
@@ -386,22 +268,27 @@
                     </button>
                 </span>
             </div>
+            <div class="mt-8 text-sm text-indigo-300 transition-opacity duration-300 ease-in opacity-0 hover:opacity-100"
+                data-primary="indigo-600">Modify Apps with Search Box Commands: <code
+                    @click="enterCommadText">/sort</code> <code @click="enterCommadText">/delete</code> <code
+                    @click="enterCommadText">/edit</code></div>
 
             <div v-if="currentApps.length"
                 class="grid py-10 grid-cols-4 gap-8 mt-10 sm:grid-cols-8 lg:grid-cols-12 sm:px-8 xl:px-0">
-                <div @click="redirectToUrl" v-for="item of currentApps" :data-url="item.url"
-                    class="shadow-1xl cursor-pointer transform hover:scale-95 transition duration-300 relative flex flex-col items-center justify-between col-span-2 px-2 py-10 space-y-2 overflow-hidden bg-gray-100 sm:rounded-xl hover:bg-gray-200">
-                    <div
-                        class="p-3 flex h-16 w-16 shrink-0 grow-0 items-center justify-center text-white bg-blue-500 rounded-full">
+                <div @click="redirectToUrl" @mousedown="modifyApp" v-for="item of currentApps" :data-url="item.url"
+                    class="shadow-1xl cursor-pointer transform hover:scale-95 transition duration-300 relative flex flex-col items-center justify-between col-span-2 px-2 py-10 space-y-2 overflow-hidden bg-gray-100 rounded-xl hover:bg-gray-200">
+                    <div :class="iconBgColor"
+                        class="p-3 flex h-16 w-16 shrink-0 grow-0 items-center justify-center text-white rounded-full">
                         <i :class="item.icon" class="fa fa-2x"></i>
                     </div>
                     <h4 class="text-xl-1 font-medium text-gray-700">{{ item.name }}</h4>
-                    <p class="text-base text-center text-gray-500 hidden">
-                    </p>
+                    <p v-if="isSort" class="text-base text-center text-gray-500">{{ item.sort }}</p>
+                    <p v-if="isEdit" class="text-base text-center text-gray-500">Edit</p>
+                    <p v-if="isDelete" class="text-base text-center text-gray-500">Delete</p>
                 </div>
             </div>
 
-            <a :href="backend.url" v-if="backend.visible && currentAppSlug === 'home'"
+            <a :href="backend.url" v-if="currentApps.length && backend.visible && currentAppSlug === 'home'"
                 class="px-10 mb-10 py-4 mt-10 sm:w-auto w-full text-center text-base font-medium inline-block rounded text-white hover:bg-blue-600 bg-blue-500">
                 {{ backend.name }}
             </a>
@@ -412,14 +299,119 @@
         const { createApp } = Vue;
         createApp({
             mounted() {
+                document.body.classList.add(this.bgColor);
                 this.loadDefaultApps();
             },
             methods: {
+                addMoreApps() {
+                    // reset form
+                    this.name = "Name";
+                    this.url = "https://";
+                    this.icon = "fas fa-link";
+                    this.checked = false;
+                    this.isNew = true;
+                    this.isSort = false;
+                    this.isEdit = false;
+                    this.isDelete = false;
+                    this.app_data_exported = false;
+                },
+
+                viewData() {
+                    this.exportAppData();
+                    this.app_data_exported = true;
+                    modal.toggle();
+                },
+                enterCommadText(e) {
+                    this.searchText = e.currentTarget.innerText;
+                    switch (this.searchText) {
+                        case "/sort":
+                            this.isSort = true;
+                            this.isEdit = false;
+                            this.isDelete = false;
+                            this.isNew = false;
+                            break;
+                        case "/edit":
+                            this.isEdit = true;
+                            this.isSort = false;
+                            this.isNew = false;
+                            this.isDelete = false;
+                            break;
+                        case "/delete":
+                            this.isDelete = true;
+                            this.isEdit = false;
+                            this.isSort = false;
+                            this.isNew = false;
+                            break;
+                        default:
+                            this.isSort = false;
+                            this.isEdit = false;
+                            this.isDelete = false;
+                            this.isNew = true;
+                            break;
+                    }
+
+                },
                 showMenu() {
                     this.showMenu = !this.showMenu;
+                    alert(this.showMenu);
                 },
                 redirectToUrl(e) {
                     window.open(e.currentTarget.getAttribute("data-url"), this.openAppInNewTab ? "_blank" : "_self");
+                },
+
+                relaodModifedApps() {
+                    this.loadDefaultApps();
+                },
+
+                modifyApp(e) {
+                    console.log("hello modifyApp");
+                    const command = this.searchText;
+                    switch (command) {
+                        case "/sort":
+                            this.isSort = true;
+                            this.apps.forEach((app) => {
+                                if (app.url === e.currentTarget.getAttribute("data-url")) {
+                                    // ensure sort is not null, default is 1000
+                                    var app_sort = app.sort ? app.sort : 1000;
+                                    app.sort = app_sort + 1;
+
+                                }
+                            });
+                            this.showExport = true;
+                            this.exportAppData();
+                            this.relaodModifedApps();
+                            break;
+
+                        case "/delete":
+                            this.apps.forEach((app) => {
+                                if (app.url === e.currentTarget.getAttribute("data-url")) {
+                                    this.apps.splice(this.apps.indexOf(app), 1);
+                                }
+                            });
+                            this.showExport = true;
+                            this.exportAppData();
+                            this.relaodModifedApps();
+                            break;
+
+                        case "/edit":
+                            this.isEdit = true;
+                            this.app_data_exported = false;
+                            this.apps.forEach((app) => {
+                                if (app.url === e.currentTarget.getAttribute("data-url")) {
+                                    // show new-app-modal
+                                    console.log(app)
+                                    this.name = app.name;
+                                    this.url = app.url;
+                                    this.icon = app.icon;
+                                }
+                            });
+                            modal.show();
+                            this.relaodModifedApps();
+                            break;
+
+                        default:
+                            break;
+                    }
                 },
 
                 ramdonIcon() {
@@ -458,7 +450,12 @@
                 },
                 closeModal() {
                     this.app_data = [];
-                    this.app_data_exported = false;
+                    var el = document.querySelector(".bg-opacity-50");
+                    // ensure el.classList exists
+                    if (el && el.classList) {
+                        el.classList.add("hidden");
+                    }
+                    modal.hide();
                 },
                 newApp(e) {
                     e.preventDefault();
@@ -466,30 +463,39 @@
                         name: this.name,
                         url: this.url,
                         icon: this.icon,
+                        sort: 1000,
                         tab_slug: this.currentAppSlug
                     };
 
-                    this.currentApps.push(newapp);
-                    this.apps.push(newapp);
+                    // add or edit
+                    if (this.isEdit) {
+                        this.apps.forEach((app) => {
+                            if (app.url == this.url && app.tab_slug == this.currentAppSlug) {
+                                app.name = this.name;
+                                app.icon = this.icon;
+                                app.url = this.url;
+                            }
+                            this.showExport = true;
+                            this.app_data_exported = true;
+                            this.isEdit = true;
+                            modal.hide();
+                        });
+
+                    } else {
+                        this.apps.push(newapp);
+                        this.isNew = false;
+                        this.app_data_exported = true;
+                        modal.hide();
+
+                    }
+                    this.closeModal();
+                    this.showExport = true;
 
                     // reset form
-                    this.name = "名称";
+                    this.name = "Name";
                     this.url = "https://";
                     this.icon = "fas fa-link";
                     this.checked = false;
-                    this.app_data_exported = true;
-
-
-                    //var el = document.getElementById("new-app-modal");
-                    //const modal = new Modal(el);
-
-                    // close modal hack
-                    // modal.hide()
-
-                    // document
-                    //     .querySelector(".bg-opacity-50")
-                    //     .classList.add("hidden");
-                    this.exportAppData();
 
                     // 跳转到新建的 app tab 显示数据
                     this.loadDefaultApps(this.currentAppSlug);
@@ -508,22 +514,37 @@
 
                     const tab_slug = e.currentTarget.getAttribute("data-tab-slug");
                     const tab_name = e.currentTarget.getAttribute("data-tab-name");
+                    const tab_bg = e.currentTarget.getAttribute("data-tab-bg");
 
                     this.currentAppTab = tab_name;
                     this.currentAppSlug = tab_slug;
                     this.loadDefaultApps(tab_slug);
+                    //replace body class with tab_bg
+                    document.body.classList = tab_bg;
+                    this.iconBgColor = tab_bg;
+                    // mobile menu off
+                    this.showMenu = false;
 
                 },
 
                 loadDefaultApps(tab_slug = this.currentAppSlug) {
-                    this.apps.forEach((app) => {
+                    const sortedApps = this.apps.slice().sort((a, b) => {
+                        if (a.sort < b.sort) {
+                            return 1;
+                        }
+                        if (a.sort > b.sort) {
+                            return -1;
+                        }
+                        return 0;
+                    });
+
+                    sortedApps.forEach((app) => {
                         if (app.tab_slug == tab_slug) {
                             this.currentApps = [];
                             setTimeout(() => {
                                 this.currentApps = this.currentApps.concat(app);
-                            }, 200);
+                            }, 300);
                         }
-
                     });
                 },
 
@@ -534,10 +555,17 @@
             },
             data() {
                 return {
+                    isNew: true,
+                    isEdit: false,
+                    isSort: false,
+                    isDelete: false,
+                    showExport: false,
+                    bgColor: "bg-indigo-600",
+                    iconBgColor: "bg-blue-600",
                     // name 和 url 可按需修改
                     brand: {
-                        name: "ZeeStart",
-                        url: "https://xxz.cc/?z",
+                        name: "Zee's Home",
+                        url: "https://home.local",
                         visible: true,
                     },
                     edit: {
@@ -546,13 +574,13 @@
                         visible: true,
                     },
                     fullscreen: {
-                        name: "Fullscreen ↗",
-                        url: `https://v.qq.com/search_redirect.html?url=https://www.baomihua.com/go.aspx?url=${"https://xxz.cc/?z"}?baomihua.com=6d9f8ff320207962ed21bd9fc05eaa7c1665832902`,
+                        name: "Send Files ↗",
+                        url: "http://10.0.0.10/send/",
                         visible: true,
                     },
                     backend: {
-                        name: "ZeeWrt Backend",
-                        url: "http://10.0.0.200:8080/luci/",
+                        name: "› NAS Console",
+                        url: "https://10.0.0.10:5001",
                         visible: true // or false
                     },
                     tabs: [
@@ -560,49 +588,58 @@
                             name: "Home",
                             slug: "home",
                             url: "#_",
+                            bgColor: "bg-indigo-600",
                         },
                         {
                             name: "Work",
                             slug: "work",
                             url: "#_",
+                            bgColor: "bg-green-600",
                         },
                         {
                             name: "NAS",
                             slug: "nas",
                             url: "#_",
+                            bgColor: "bg-yellow-600",
                         },
                         {
                             name: "TΞSLA",
                             slug: "tesla",
-                            url: "https://www.tesla.com/",
+                            url: `https://v.qq.com/search_redirect.html?url=https://www.baomihua.com/go.aspx?url=${"https://xxz.cc/?z"}?baomihua.com=6d9f8ff320207962ed21bd9fc05eaa7c1665832902`,
+                            bgColor: "bg-red-600",
                         },
                         {
                             name: "Utility",
                             slug: "utility",
                             url: "#_",
+                            bgColor: "bg-blue-600",
                         },
                         // {
                         //      name: "Gaming",
                         //      slug: "gaming",
                         //      url: "#_",
+                        //      bgColor: "bg-purple-600",
                         // },
                         // {
                         //      name: "Development",
                         //      slug: "development",
                         //      url: "#_",
+                        //      bgColor: "bg-pink-600",
                         // },
                         // {
                         //      name: "Other",
                         //      slug: "other",
                         //      url: "#_",
+                        //      bgColor: "bg-gray-600",
                         // },
                     ],
                     // misc
                     showMenu: false,
                     // new app
-                    name: "名称",
+                    name: "Name",
                     url: "https://",
                     icon: "fa-link",
+                    sort: 1000,
                     checked: false,
                     app_data: [],
                     app_data_exported: false,
@@ -618,10 +655,13 @@
                         provider: "Google",
                         url: "https://www.google.com/search?q="
                     },
+                    searchText: "Google",
                     apps:
-                        /// 以下整行为 apps 数据，双击替换。本行留作分界线，不要删除；添加 app 后，apps 数据粘贴到这里
-                        []
-                    /// 以上整行为 apps 数据，双击替换。本行留作分界线，不要删除：搜索直达关键词：ZeeAppData
+                        /// App Data - Keywork: "ZAD"
+
+                        [{"name":"Twitter","url":"https://twitter.com/xinzhi","icon":"fa-brands fa-twitter","sort":1015,"tab_slug":"home"},{"name":"Gumroad","url":"https://gumroad.com","icon":"fa-dog","sort":1000,"tab_slug":"work"},{"name":"Bilibili","url":"https://space.bilibili.com/98817842/","icon":"fa-brands fas fa-bilibili","sort":1001,"tab_slug":"home"},{"name":"YouTube","url":"https://www.youtube.com/channel/UCgrNxW6i6fGzCZ-TWks4SnA","icon":"fa-brands fas fa-youtube","sort":1002,"tab_slug":"home"},{"name":"ProductHunt","url":"https://www.producthunt.com","icon":"fas fa-cat","sort":1001,"tab_slug":"home"},{"name":"Google Analytics","url":"https://analytics.google.com/analytics/web/?authuser=1#/p309930872/reports/intelligenthome","icon":"fa-circle-arrow-up","sort":1000,"tab_slug":"work"},{"name":"Gmail #1","url":"https://mail.google.com/mail/u/0/#inbox","icon":"fa-spray-can-sparkles","sort":1000,"tab_slug":"work"},{"name":"Gmail #2","url":"https://mail.google.com/mail/u/1/#inbox","icon":"fa-cloud-sun","sort":1000,"tab_slug":"work"},{"name":"CopyAI","url":"https://app.copy.ai/","icon":"fa-radiation","sort":1000,"tab_slug":"work"},{"name":"TeslaMate","url":"http://zeex-nas.direct.quickconnect.cn:4000/","icon":"fa-car-tunnel","sort":1000,"tab_slug":"tesla"},{"name":"NetBird","url":"https://app.netbird.io/peers","icon":"fa-cloud","sort":1000,"tab_slug":"nas"},{"name":"Toot","url":"https://toot.zhix.in","icon":"fa-tower-cell","sort":1000,"tab_slug":"nas"},{"name":"Zee's Weblog","url":"https://zhix.in","icon":"fa-blog","sort":1000,"tab_slug":"home"},{"name":"Workbene","url":"https://workbene.com","icon":"fa-handshake-angle","sort":1000,"tab_slug":"home"},{"name":"Telegraph","url":"https://telegra.ph/","icon":"fa-language","sort":1000,"tab_slug":"utility"}]
+
+                        /// ZAD
                 };
             },
         }).mount("#app");
@@ -655,19 +695,19 @@
             getDayOfWeek(day) {
                 switch (day) {
                     case 1:
-                        return "周一";
+                        return "Monday";
                     case 2:
-                        return "周二";
+                        return "Tuesday";
                     case 3:
-                        return "周三";
+                        return "Thursday";
                     case 4:
-                        return "周四";
+                        return "Wednesday";
                     case 5:
-                        return "周五";
+                        return "Friday";
                     case 6:
-                        return "周六";
+                        return "Saturday";
                     default:
-                        return "周日";
+                        return "Sunday";
                 }
             }
             getMonthInfo(mo, yr) {
@@ -730,9 +770,9 @@
                     const units = [
                         {
                             label: "year_progress",
-                            value: `${year} 过去了 ${Math.round(
+                            value: `${year} Past ${Math.round(
                                 mo_progress * 100
-                            )}%，还剩 ${Math.round(daysLeft)} 天`
+                            )}%，${Math.round(daysLeft)} Days Remaining`,
                         },
                         {
                             label: "w",
@@ -764,7 +804,7 @@
                         },
                         {
                             label: "ap",
-                            value: hr > 12 ? "下午" : "上午",
+                            value: hr > 12 ? "PM" : "AM",
                         },
                     ];
                     // flush out the timeouts
@@ -798,13 +838,10 @@
                                 }
                             }
                         }
-                        // digits
                         const unit = this.el.querySelector(`[data-unit="${u.label}"]`);
                         if (unit) unit.innerText = u.value;
 
-                        // add title to element
                         const title = this.el.querySelector(`[data-title="${u.label}"]`);
-                        // update attribute title
                         if (title) title.setAttribute("title", u.value);
                     });
                 }
@@ -819,7 +856,8 @@
         var header = document.getElementById("header-container");
         var apps = document.getElementById("apps-container");
         var app = document.getElementById("app");
-        var modal = document.getElementById("new-app-modal");
+        const el = document.getElementById("new-app-modal");
+        const modal = new Modal(el);
         var noteTextarea = document.getElementById("note-textarea");
 
         function saveNote() {
@@ -830,7 +868,6 @@
             noteTextarea.value = localStorage.getItem("note");
         }
 
-        // auto save and load note
         loadNote();
 
         noteTextarea.addEventListener("change", function () {
@@ -838,12 +875,22 @@
         });
 
         apps.addEventListener("dblclick", function () {
+            if (!this.isNew || this.isEdit || this.isDelete || this.isSort) {
+                return;
+            }
+            loadNote();
             apps.classList.add("hidden");
             noteTextarea.classList.remove("hidden");
             noteTextarea.focus();
         });
 
         function showClock() {
+
+            if (window.innerWidth < 768) {
+                return;
+            }
+            var modal = document.getElementById("new-app-modal");
+
             if (noteTextarea.classList.contains("hidden") && modal.classList.contains("hidden")) {
                 apps.classList.add("transition-opacity", "ease-out", "duration-100", "opacity-0");
                 setTimeout(function () {
@@ -867,11 +914,11 @@
 
         function resetTimer() {
             clearTimeout(timer);
-            timer = setTimeout(showClock, 5000);
+            timer = setTimeout(showClock, 10000);
         }
 
         function startTimer() {
-            timer = setTimeout(showClock, 5000);
+            timer = setTimeout(showClock, 10000);
         }
 
         document.onmousemove = resetTimer;
