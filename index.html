@@ -247,7 +247,8 @@
         </div>
     </section>
 
-    <!-- Section Note -->
+    <!-- Section 
+ -->
     <section id="note-containder" class="bg-indigo-600">
         <textarea id="note-textarea" rows="40"
             class="hidden bg-indigo-600 focus:outline-none p-10 w-full h-full text-xl text-white rounded-none border-none dark:placeholder-gray-400 dark:text-white"
@@ -875,9 +876,6 @@
         });
 
         apps.addEventListener("dblclick", function () {
-            if (!this.isNew || this.isEdit || this.isDelete || this.isSort) {
-                return;
-            }
             loadNote();
             apps.classList.add("hidden");
             noteTextarea.classList.remove("hidden");
